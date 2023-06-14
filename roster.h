@@ -1,0 +1,4 @@
+class Roster
+{
+    int numStudents;
+};
