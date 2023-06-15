@@ -2,7 +2,7 @@
 #include <iostream>
 
 // Constructor
-Student::Student(int id, const std::string &first, const std::string &last,
+Student::Student(const std::string &id, const std::string &first, const std::string &last,
                  const std::string &emailAddress, int studentAge, const int days[3],
                  DegreeProgram studentProgram)
 {
@@ -20,7 +20,7 @@ Student::Student(int id, const std::string &first, const std::string &last,
 
 // Getters
 
-int Student::getID() const
+std::string Student::getID() const
 {
     return studentID;
 }
@@ -57,7 +57,7 @@ DegreeProgram Student::getProgram() const
 
 // Setters
 
-void Student::setID(int id)
+void Student::setID(const std::string &id)
 {
     studentID = id;
 }

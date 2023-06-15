@@ -1,61 +1,88 @@
 #include <iostream>
 #include <string>
-#include <vector>
-#include <algorithm>
-#include <student.h>
+#include <sstream>
+#include "roster.h"
 
-using namespace std;
-
-vector<string> splitString(const string &inputString)
+Student createStudent(const std::string &input)
 {
-    vector<string> result;
-    string token;
+    std::stringstream ss(input);
+    std::string token;
 
-    size_t start = 0;
-    size_t end = inputString.find(',');
+    std::string studentID;
+    std::string firstName;
+    std::string lastName;
+    std::string email;
+    int age;
+    int daysToComplete[3];
+    DegreeProgram program;
 
-    while (end != string::npos)
+    std::getline(ss, studentID, ',');
+    std::getline(ss, firstName, ',');
+    std::getline(ss, lastName, ',');
+    std::getline(ss, email, ',');
+    std::getline(ss, token, ',');
+    age = std::stoi(token);
+    std::getline(ss, token, ',');
+    daysToComplete[0] = std::stoi(token);
+    std::getline(ss, token, ',');
+    daysToComplete[1] = std::stoi(token);
+    std::getline(ss, token, ',');
+    daysToComplete[2] = std::stoi(token);
+    std::getline(ss, token, ',');
+    if (token == "SECURITY")
     {
-        token = inputString.substr(start, end - start);
-        result.push_back(token);
-
-        start = end + 1;
-        end = inputString.find(',', start);
+        program = SECURITY;
+    }
+    else if (token == "NETWORK")
+    {
+        program = NETWORK;
+    }
+    else if (token == "SOFTWARE")
+    {
+        program = SOFTWARE;
     }
 
-    token = inputString.substr(start);
-    result.push_back(token);
-
-    // Combine "30", "35", "40" into a separate array
-    vector<string> additionalValues;
-    additionalValues.push_back(result[5]);
-    additionalValues.push_back(result[6]);
-    additionalValues.push_back(result[7]);
-
-    // Remove the elements "30", "35", "40"
-    result.erase(result.begin() + 5, result.begin() + 8);
-
-    // Insert the combined array before "SECURITY"
-    auto it = find(result.begin(), result.end(), string("SECURITY"));
-    result.insert(it, additionalValues.begin(), additionalValues.end());
-
-    return result;
-}
-
-void createStudent(vector<string> studentData)
-{
+    // Create and return a new Student object
+    return Student(studentID, firstName, lastName, email, age, daysToComplete, program);
 }
 
 int main()
 {
-    string input = "A1,John,Smith,John1989@gm ail.com,20,30,35,40,SECURITY";
-    vector<string> output = splitString(input);
+    const std::string studentDataArray[] = {
+        "A1,John,Smith,John1989@gmail.com,20,30,35,40,SECURITY",
+        "A2,Suzan,Erickson,Erickson_1990@gmailcom,19,50,30,40,NETWORK",
+        "A3,Jack,Napoli,The_lawyer99yahoo.com,19,20,40,33,SOFTWARE",
+        "A4,Erin,Black,Erin.black@comcast.net,22,50,58,40,SECURITY",
+        "A5,Paxton,Terry,dter125@wgu.com,27,20,25,30,SOFTWARE"};
 
-    // Printing the split strings
-    for (const auto &str : output)
+    std::cout << "Course Title: C867 - Scripting and Programming Applications" << std::endl;
+    std::cout << "Language Used: C++" << std::endl;
+    std::cout << "WGU Student ID: YOUR_STUDENT_ID" << std::endl;
+    std::cout << "Name: YOUR_NAME" << std::endl;
+
+    Roster classRoster(5);
+
+    for (const std::string &studentData : studentDataArray)
     {
-        cout << str << endl;
+        Student student = createStudent(studentData);
+        classRoster.add(student);
     }
+
+    classRoster.printAll();
+    classRoster.printInvalidEmails();
+
+    for (int i = 0; i < classRoster.getSize(); i++)
+    {
+        classRoster.printAverageDaysInCourse(classRoster.getStudentByID(std::to_string(i + 1))->getID());
+    }
+
+    classRoster.printByDegreeProgram(SOFTWARE);
+
+    classRoster.remove("A3");
+
+    classRoster.printAll();
+
+    classRoster.remove("A3");
 
     return 0;
 }

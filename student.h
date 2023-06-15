@@ -8,7 +8,7 @@ class Student
 {
 
 private:
-    int studentID;
+    string studentID;
     string firstName;
     string lastName;
     string email;
@@ -18,7 +18,7 @@ private:
 
 public:
     // Getters
-    int getID() const
+    string getID() const
     {
         return studentID;
     };
@@ -48,7 +48,7 @@ public:
     };
 
     // Setters
-    void setID(const int id)
+    void setID(const string &id)
     {
         studentID = id;
     };
@@ -81,7 +81,7 @@ public:
     };
 
     // Constructor
-    Student(int id, const string &first, const string &last,
+    Student(const string &id, const string &first, const string &last,
             const string &emailAddress, int studentAge, const int days[3],
             DegreeProgram studentProgram)
     {

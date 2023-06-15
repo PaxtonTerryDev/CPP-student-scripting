@@ -1,102 +1,123 @@
-#include "roster.h"
 #include <iostream>
+#include <vector>
+#include "roster.h"
 
 // Constructor
-Roster::Roster()
+Roster::Roster(int maxSize)
 {
-    // Initialize the classRosterArray with null pointers
-    for (int i = 0; i < MAX_STUDENTS; i++)
-    {
-        classRosterArray[i] = nullptr;
-    }
+    this->maxSize = maxSize;
 }
 
 // Destructor
 Roster::~Roster()
 {
-    // Free the memory allocated for each student object
-    for (int i = 0; i < MAX_STUDENTS; i++)
+    for (Student *student : classRosterArray)
     {
-        delete classRosterArray[i];
-        classRosterArray[i] = nullptr;
+        delete student;
     }
+}
+
+// Getter for roster size
+int Roster::getSize() const
+{
+    return classRosterArray.size();
+}
+
+// Getter for a student by ID
+Student *Roster::getStudentByID(const std::string &studentID) const
+{
+    for (Student *student : classRosterArray)
+    {
+        if (student->getID() == studentID)
+        {
+            return student;
+        }
+    }
+    return nullptr; // Student not found
 }
 
 // Add a student to the roster
-void Roster::add(const std::string &studentID, const std::string &firstName, const std::string &lastName,
-                 const std::string &emailAddress, int age, int daysInCourse1, int daysInCourse2,
-                 int daysInCourse3, DegreeProgram degreeProgram)
+void Roster::add(const Student &student)
 {
-    // Create a new student object
-    Student *student = new Student(studentID, firstName, lastName, emailAddress, age,
-                                   daysInCourse1, daysInCourse2, daysInCourse3, degreeProgram);
-
-    // Find the first available spot in the classRosterArray
-    int index = -1;
-    for (int i = 0; i < MAX_STUDENTS; i++)
+    if (classRosterArray.size() < maxSize)
     {
-        if (classRosterArray[i] == nullptr)
-        {
-            index = i;
-            break;
-        }
-    }
-
-    // If there is an available spot, add the student to the roster
-    if (index != -1)
-    {
-        classRosterArray[index] = student;
-        std::cout << "Student added to the roster." << std::endl;
+        // Create a new dynamically allocated Student object
+        Student *newStudent = new Student(student);
+        classRosterArray.push_back(newStudent);
     }
     else
     {
-        std::cout << "Roster is full. Student could not be added." << std::endl;
+        std::cout << "Error: Roster is already full. Cannot add more students." << std::endl;
     }
 }
 
-// Remove a student from the roster by student ID
+// Remove a student from the roster by ID
 void Roster::remove(const std::string &studentID)
 {
     bool found = false;
-
-    for (int i = 0; i < MAX_STUDENTS; i++)
+    for (auto it = classRosterArray.begin(); it != classRosterArray.end(); ++it)
     {
-        if (classRosterArray[i] != nullptr && classRosterArray[i]->getID() == studentID)
+        if ((*it)->getID() == studentID)
         {
-            delete classRosterArray[i];
-            classRosterArray[i] = nullptr;
+            delete *it;
+            classRosterArray.erase(it);
             found = true;
-            std::cout << "Student with ID " << studentID << " removed from the roster." << std::endl;
             break;
         }
     }
-
     if (!found)
     {
-        std::cout << "Student with ID " << studentID << " not found in the roster." << std::endl;
+        std::cout << "Error: Student with ID " << studentID << " was not found." << std::endl;
     }
 }
 
 // Print all student data
 void Roster::printAll() const
 {
-    for (int i = 0; i < MAX_STUDENTS; i++)
+    for (const Student *student : classRosterArray)
     {
-        if (classRosterArray[i] != nullptr)
+        student->printInfo();
+    }
+}
+
+// Print invalid email addresses
+void Roster::printInvalidEmails() const
+{
+    for (const Student *student : classRosterArray)
+    {
+        std::string email = student->getEmail();
+        if (email.find('@') == std::string::npos || email.find('.') == std::string::npos || email.find(' ') != std::string::npos)
         {
-            classRosterArray[i]->printInfo();
+            std::cout << "Invalid email: " << email << std::endl;
         }
     }
 }
 
-// Print average number of days in the courses for a student
+// Print average number of days in the course for a student
 void Roster::printAverageDaysInCourse(const std::string &studentID) const
 {
-    bool found = false;
-
-    for (int i = 0; i < MAX_STUDENTS; i++)
+    Student *student = getStudentByID(studentID);
+    if (student)
     {
-        if (classRosterArray[i] != nullptr && classRosterArray[i]->getID() == studentID)
+        const int *daysToComplete = student->getDaysToComplete();
+        int sum = daysToComplete[0] + daysToComplete[1] + daysToComplete[2];
+        double average = static_cast<double>(sum) / 3;
+        std::cout << "Average days in course for student " << studentID << ": " << average << std::endl;
+    }
+    else
+    {
+        std::cout << "Error: Student with ID " << studentID << " was not found." << std::endl;
+    }
+}
+
+// Print student information by degree program
+void Roster::printByDegreeProgram(DegreeProgram degreeProgram) const
+{
+    for (const Student *student : classRosterArray)
+    {
+        if (student->getProgram() == degreeProgram)
         {
-            const int *daysToComplete = classRosterArray[i]->getDaysToComplete();
-            int sum =
+            student->printInfo();
+        }
+    }
+}
