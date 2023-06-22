@@ -1,112 +1,87 @@
-#include "student.h"
 #include <iostream>
+#include <vector>
+#include "student.h"
 
-// Constructor
-Student::Student(const std::string &id, const std::string &first, const std::string &last,
-                 const std::string &emailAddress, int studentAge, const int days[3],
-                 DegreeProgram studentProgram)
+using namespace std;
+
+// constructor
+Student::Student(string id, string first, string last, string newEmail, int newAge, vector<int> days, DegreeProgram program)
 {
     studentID = id;
     firstName = first;
     lastName = last;
-    email = emailAddress;
-    age = studentAge;
-    for (int i = 0; i < 3; i++)
-    {
-        daysToComplete[i] = days[i];
-    }
-    program = studentProgram;
-}
+    email = newEmail;
+    age = newAge;
+    daysToComplete = days;
+    degreeProgram = program;
+};
 
-// Getters
+// getters
 
-std::string Student::getID() const
+string Student::getStudentID()
 {
     return studentID;
-}
-
-std::string Student::getFirst() const
+};
+string Student::getFirstName()
 {
     return firstName;
-}
-
-std::string Student::getLast() const
+};
+string Student::getLastName()
 {
     return lastName;
-}
-
-std::string Student::getEmail() const
+};
+string Student::getEmail()
 {
     return email;
-}
-
-int Student::getAge() const
+};
+int Student::getAge()
 {
     return age;
 }
-
-const int *Student::getDaysToComplete() const
+vector<int> Student::getDays()
 {
     return daysToComplete;
-}
-
-DegreeProgram Student::getProgram() const
+};
+DegreeProgram Student::getDegreeProgram()
 {
-    return program;
-}
+    return degreeProgram;
+};
 
-// Setters
-
-void Student::setID(const std::string &id)
+void Student::setID(string id)
 {
     studentID = id;
-}
-
-void Student::setFirst(const std::string &first)
+};
+void Student::setFirstName(string first)
 {
     firstName = first;
-}
-
-void Student::setLast(const std::string &last)
+};
+void Student::setLastName(string last)
 {
     lastName = last;
-}
-
-void Student::setEmail(const std::string &newEmail)
+};
+void Student::setEmail(string newEmail)
 {
     email = newEmail;
-}
-
+};
 void Student::setAge(int newAge)
 {
     age = newAge;
-}
-
-void Student::setDaysToComplete(const int values[3])
+};
+void Student::setDaysToComplete(vector<int> &newVector)
 {
-    for (int i = 0; i < 3; i++)
-    {
-        daysToComplete[i] = values[i];
-    }
-}
-
-void Student::setProgram(DegreeProgram newProgram)
+    daysToComplete = newVector;
+};
+void Student::setDegreeProgram(DegreeProgram program)
 {
-    program = newProgram;
-}
-
-// Example member function
-void Student::printInfo() const
+    degreeProgram = program;
+};
+void Student::printStudent()
 {
-    std::cout << "Student ID: " << studentID << std::endl;
-    std::cout << "Name: " << firstName << " " << lastName << std::endl;
-    std::cout << "Email: " << email << std::endl;
-    std::cout << "Age: " << age << std::endl;
-    std::cout << "Days to Complete: ";
-    for (int i = 0; i < 3; i++)
-    {
-        std::cout << daysToComplete[i] << " ";
-    }
-    std::cout << std::endl;
-    std::cout << "Program: " << static_cast<int>(program) << std::endl;
+    std::cout << studentID << std::endl;
+    std::cout << firstName << std::endl;
+    std::cout << lastName << std::endl;
+    std::cout << email << std::endl;
+    std::cout << age << std::endl;
+    std::cout << degreeProgram << std::endl;
+    std::cout << "----------------------" << std::endl;
 }

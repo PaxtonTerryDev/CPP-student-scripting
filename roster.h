@@ -1,43 +1,67 @@
-#pragma once
-
+#include <iostream>
 #include <string>
-#include <vector>
+#include <sstream>
+#include <array>
 #include "student.h"
 
 class Roster
 {
 private:
-    std::vector<Student *> classRosterArray;
-    int maxSize;
+    std::array<Student *, 5> classRosterArray;
 
 public:
-    // Constructor
-    Roster(int maxSize);
+    void createRoster(const std::string studentData[], int numStudents)
+    {
+        for (int i = 0; i < numStudents; i++)
+        {
+            std::string id;
+            std::string first;
+            std::string last;
+            std::string email;
+            int age;
+            int days[3];
+            DegreeProgram program;
+            std::stringstream ss(studentData[i]);
+            std::string item;
 
-    // Destructor
-    ~Roster();
+            ;
 
-    // Getter for roster size
-    int getSize() const;
+            // Parse and assign each comma-separated value
+            std::getline(ss, id, ',');
+            std::getline(ss, first, ',');
+            std::getline(ss, last, ',');
+            std::getline(ss, email, ',');
+            ss >> age;
+            ss.ignore();
+            int classDays[3];
+            for (int j = 0; j < 3; j++)
+            {
+                ss >> classDays[j];
+                ss.ignore();
+            }
+            std::string programStr;
+            std::getline(ss, programStr);
 
-    // Getter for a student by ID
-    Student *getStudentByID(const std::string &studentID) const;
+            // Convert program string to enum
+            if (programStr == "SECURITY")
+            {
+                program = SECURITY;
+            }
+            else if (programStr == "NETWORK")
+            {
+                program = NETWORK;
+            }
+            else if (programStr == "SOFTWARE")
+            {
+                program = SOFTWARE;
+            }
 
-    // Add a student to the roster
-    void add(const Student &student);
+            Student *student = new Student(id, first, last, email, age, classDays, program)
 
-    // Remove a student from the roster by ID
-    void remove(const std::string &studentID);
+                classRosterArray[i] = student;
 
-    // Print all student data
-    void printAll() const;
-
-    // Print invalid email addresses
-    void printInvalidEmails() const;
-
-    // Print average number of days in the course for a student
-    void printAverageDaysInCourse(const std::string &studentID) const;
-
-    // Print student information by degree program
-    void printByDegreeProgram(DegreeProgram degreeProgram) const;
+            // Print the assigned values for the current student
+            student->printInfo();
+        }
+    }
 };
