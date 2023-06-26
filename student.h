@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <vector>
+#include <array>
 #include "degree.h"
 using namespace std;
 
@@ -12,12 +12,12 @@ private:
     string lastName;
     string email;
     int age;
-    vector<int> daysToComplete;
+    array<int, 3> daysToComplete;
     DegreeProgram degreeProgram;
 
 public:
     // constructor
-    Student(string id, string first, string last, string email, int age, vector<int> days, DegreeProgram program);
+    Student(string id, string first, string last, string email, int age, array<int, 3> days, DegreeProgram program);
 
     // getters
     string getStudentID();
@@ -25,7 +25,7 @@ public:
     string getLastName();
     string getEmail();
     int getAge();
-    vector<int> getDays();
+    array<int, 3> getDays();
     DegreeProgram getDegreeProgram();
     // setters
     void setID(string id);
@@ -33,7 +33,7 @@ public:
     void setLastName(string lastName);
     void setEmail(string email);
     void setAge(int age);
-    void setDaysToComplete(vector<int> &newVector);
+    void setDaysToComplete(array<int, 3> &newArray);
     void setDegreeProgram(DegreeProgram newProgram);
 
     // other

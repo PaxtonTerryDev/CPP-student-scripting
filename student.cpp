@@ -1,11 +1,11 @@
 #include <iostream>
-#include <vector>
+#include <array>
 #include "student.h"
 
 using namespace std;
 
 // constructor
-Student::Student(string id, string first, string last, string newEmail, int newAge, vector<int> days, DegreeProgram program)
+Student::Student(string id, string first, string last, string newEmail, int newAge, array<int, 3> days, DegreeProgram program)
 {
     studentID = id;
     firstName = first;
@@ -38,7 +38,7 @@ int Student::getAge()
 {
     return age;
 }
-vector<int> Student::getDays()
+array<int, 3> Student::getDays()
 {
     return daysToComplete;
 };
@@ -67,9 +67,9 @@ void Student::setAge(int newAge)
 {
     age = newAge;
 };
-void Student::setDaysToComplete(vector<int> &newVector)
+void Student::setDaysToComplete(array<int, 3> &newArray)
 {
-    daysToComplete = newVector;
+    daysToComplete = newArray;
 };
 void Student::setDegreeProgram(DegreeProgram program)
 {
@@ -82,6 +82,11 @@ void Student::printStudent()
     std::cout << lastName << std::endl;
     std::cout << email << std::endl;
     std::cout << age << std::endl;
+    for (int i = 0; i < 3; i++)
+    {
+
+        std::cout << daysToComplete[i] << std::endl;
+    }
     std::cout << degreeProgram << std::endl;
     std::cout << "----------------------" << std::endl;
 }
