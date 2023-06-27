@@ -37,5 +37,6 @@ public:
     void setDegreeProgram(DegreeProgram newProgram);
 
     // other
-    void printStudent();
+    void print();
+    int calculateAverageDaysInCourse();
 };

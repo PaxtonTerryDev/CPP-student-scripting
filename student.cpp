@@ -75,18 +75,36 @@ void Student::setDegreeProgram(DegreeProgram program)
 {
     degreeProgram = program;
 };
-void Student::printStudent()
+
+std::string degreeProgramToString(DegreeProgram degreeProgram)
 {
-    std::cout << studentID << std::endl;
-    std::cout << firstName << std::endl;
-    std::cout << lastName << std::endl;
-    std::cout << email << std::endl;
-    std::cout << age << std::endl;
+    switch (degreeProgram)
+    {
+    case DegreeProgram::SECURITY:
+        return "Security";
+    case DegreeProgram::NETWORK:
+        return "Network";
+    case DegreeProgram::SOFTWARE:
+        return "Software";
+    default:
+        return "Unknown";
+    }
+}
+
+int Student::calculateAverageDaysInCourse()
+{
+    int sum = 0;
     for (int i = 0; i < 3; i++)
     {
-
-        std::cout << daysToComplete[i] << std::endl;
+        sum += daysToComplete[i];
     }
-    std::cout << degreeProgram << std::endl;
-    std::cout << "----------------------" << std::endl;
+    return sum / 3;
+}
+
+void Student::print()
+{
+    std::cout << "Student ID: " << studentID << "\tFirst Name: " << firstName
+              << "\tLast Name: " << lastName << "\tAge: " << age
+              << "\tdaysInCourse: {" << daysToComplete[0] << ", " << daysToComplete[1] << ", " << daysToComplete[2] << "}"
+              << "\tDegree Program: " << degreeProgramToString(degreeProgram) << std::endl;
 }
